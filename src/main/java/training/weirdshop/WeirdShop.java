@@ -1,62 +1,89 @@
 package training.weirdshop;
 
+import com.sun.tools.javac.jvm.Items;
+
 class WeirdShop {
+
     private Item[] items;
+
+    public Item[] getItems() {
+        return items;
+    }
 
     public WeirdShop(Item[] items) {
         this.items = items;
     }
 
     void updateQuality() {
-        for (int i = 0; i < items.length; i++) {
-            if (!items[i].name.equals("Aged Brie")
-                    && !items[i].name.equals("Backstage Pass")) {
-                if (items[i].quality > 0) {
-                    if (!items[i].name.equals("Gold Coin")) {
-                        items[i].quality = items[i].quality - 1;
+        for (Item item : items) {
+            if (!isBrie(item)
+                    && !isBackstagePass(item)) {
+                if (item.quality > 0) {
+                    if (!isGoldCoin(item)) {
+                        item.quality--;
                     }
                 }
             } else {
-                if (items[i].quality < 50) {
-                    items[i].quality = items[i].quality + 1;
+                if (item.quality < 50) {
+                    item.quality++;
 
-                    if (items[i].name.equals("Backstage Pass")) {
-                        if (items[i].sellIn < 12) {
-                            if (items[i].quality < 50) {
-                                items[i].quality = items[i].quality + 1;
+                    if (isBackstagePass(item)) {
+                        if (item.sellIn < 12) {
+                            if (item.quality < 50) {
+                                item.quality++;
                             }
                         }
 
-                        if (items[i].sellIn < 7) {
-                            if (items[i].quality < 50) {
-                                items[i].quality = items[i].quality + 1;
+                        if (item.sellIn < 7) {
+                            if (item.quality < 50) {
+                                item.quality++;
                             }
                         }
                     }
                 }
             }
 
-            if (!items[i].name.equals("Gold Coin")) {
-                items[i].sellIn = items[i].sellIn - 1;
+            if (!isGoldCoin(item)) {
+                item.sellIn--;
             }
 
-            if (items[i].sellIn < 0) {
-                if (!items[i].name.equals("Aged Brie")) {
-                    if (!items[i].name.equals("Backstage Pass")) {
-                        if (items[i].quality > 0) {
-                            if (!items[i].name.equals("Gold Coin")) {
-                                items[i].quality = items[i].quality - 1;
+            if (item.sellIn < 0) {
+                if (!isBrie(item)) {
+                    if (!isBackstagePass(item)) {
+                        if (item.quality > 0) {
+                            if (!isGoldCoin(item)) {
+                                item.quality--;
                             }
                         }
                     } else {
-                        items[i].quality = items[i].quality - items[i].quality;
+                        item.quality = 0;
                     }
                 } else {
-                    if (items[i].quality < 50) {
-                        items[i].quality = items[i].quality + 1;
+                    if (item.quality < 50) {
+                        item.quality++;
                     }
                 }
             }
         }
     }
+
+
+    public static boolean isBrie(Item items) {
+
+        return items.name.equals("Aged Brie");
+
+    }
+
+    public static boolean isBackstagePass(Item items) {
+
+        return items.name.equals("Backstage Pass");
+
+    }
+
+    public static boolean isGoldCoin(Item items) {
+
+        return items.name.equals("Gold Coin");
+
+    }
+
 }
